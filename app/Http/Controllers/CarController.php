@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CarController extends Controller
 {
@@ -12,7 +14,13 @@ class CarController extends Controller
      */
     public function index()
     {
-        return view('car.index');
+        $cars = User::find(1)
+            ->cars()
+            ->with(['primaryImage', 'maker', 'model'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('car.index', ['cars' => $cars]);
     }
 
     /**
@@ -28,15 +36,59 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'maker_id' => 'required|integer',
+            'model_id' => 'required|integer',
+            'year' => 'required|integer',
+            'car_type_id' => 'required|integer',
+            'price' => 'required|numeric',
+            'fuel_type_id' => 'required|integer',
+            'vin' => 'required|string',
+            'mileage' => 'nullable|string',
+            'city_id' => 'required|integer',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string',
+            'description' => 'nullable|string',
+            'published' => 'nullable|boolean',
+        ]);
+
+        $car = Car::create([
+            'user_id' => Auth::id(), // ربط العربية بالمستخدم الحالي
+            'maker_id' => $request->maker_id,
+            'model_id' => $request->model_id,
+            'year' => $request->year,
+            'car_type_id' => $request->car_type_id,
+            'price' => $request->price,
+            'vin' => $request->vin,
+            'mileage' => $request->mileage,
+            'fuel_type_id' => $request->fuel_type_id,
+            'city_id' => $request->city_id,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'description' => $request->description,
+            'published_at' => $request->published_at ? 1 : 0,
+            'published_at' => $request->published ? now() : null,
+
+        ]);
+
+        // حفظ الصور لو اتبعتت
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('cars', 'public');
+                $car->images()->create(['image_path' => $path, 'position' => 1]);
+            }
+        }
+
+        return redirect()->route('car.show', $car->id);
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Car $car)
     {
-        return view('car.show');
+        return view('car.show', ['car' => $car]);
     }
 
     /**
@@ -65,6 +117,32 @@ class CarController extends Controller
 
     public function search()
     {
-        return view('car.search');
+        // $query = Car::select('cars*')-> where('published_at', '<', now())
+        $query = Car::where('published_at', '<', now())
+            ->with(['primaryImage', 'city', 'carType', 'fuelType', 'maker', 'model'])
+            ->orderBy('published_at', 'desc');
+
+        // $query->leftJoin('cities','cities.id','=','cars.city_id')
+        // // $query->Join('cities','cities.id','=','cars.city_id')
+        // ->join('car_types','car_types.id','=','cars.car_type_id')
+        // ->where('cities.state_id',1)
+        // ->where('car_types.name','Sedan');
+        // $query->select('cars.*','cities.name as city_name');
+        // $carCount = $query->count();
+        // $cars = $query->limit(30)->get();
+        $cars = $query->paginate(15);
+
+        return view('car.search', ['cars' => $cars]);
     }
+
+    public function watchlist()
+    {
+        $cars = User::find(4)
+            ->favouriteCars()
+            ->with(['primaryImage', 'city', 'carType', 'fuelType', 'maker', 'model'])
+            ->paginate(15);
+
+        return view('car.watchlist', ['cars' => $cars]);
+    }
+
 }

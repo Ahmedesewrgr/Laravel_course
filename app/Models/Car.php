@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Model as ModelsModel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,7 +24,7 @@ class Car extends Model
         "price",
         "vin",
         "mileage",
-        "car-type_id",
+        "car_type_id",
         "fuel_type_id",
         "user_id",
         "city_id",
@@ -34,16 +35,16 @@ class Car extends Model
 
     ];
 
-    public function features(): HasOne
+    public function feature(): HasOne
     {
         return $this->hasOne(CarFeatures::class,'car_id');
     }
 
-    public function primaryImage(): HasOne
-    {
-        return $this->hasOne(CarImage::class)
-            ->oldestOfMany('position');
+   public function primaryImage()
+{
+    return $this->hasOne(CarImage::class)->where('is_primary', 1)->oldestOfMany('position');
     }
+
 
     public function images(): HasMany
     {
@@ -65,7 +66,7 @@ class Car extends Model
     }
     public function model(): BelongsTo
     {
-        return $this->belongsTo(Model::class);
+        return $this->belongsTo(\App\Models\Model::class);
     }
     public function owner(): BelongsTo
     {
@@ -80,6 +81,12 @@ class Car extends Model
     {
         return $this->belongsToMany(User::class, 'favourite_cars');
     }
+    public function getCreateDate(): string
+    {
+        return (new Carbon($this->created_at))->format('y-m-d');
+    }
+
+
 }
 
 

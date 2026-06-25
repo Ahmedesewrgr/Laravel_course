@@ -12,10 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('car_images', function (Blueprint $table) {
+            // $table->id();
+            // $table->foreignId('car_id')->constrained('cars');
+            // $table->string('image_path',255);
+            // $table->integer('position');
             $table->id();
-            $table->foreignId('car_id')->constrained('cars');
+            $table->foreignId('car_id')->constrained()->onDelete('cascade');
             $table->string('image_path',255);
-            $table->integer('position');
+            $table->boolean('is_primary')->default(0);
+            $table->integer('position')->default(0); // أو nullable
+            $table->timestamps();
+
         });
     }
 
@@ -24,6 +31,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favourite_cars');
+        Schema::dropIfExists('car_images');
     }
+
 };

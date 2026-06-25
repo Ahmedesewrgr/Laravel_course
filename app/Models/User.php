@@ -39,7 +39,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function favouredCars(): BelongsToMany
+    public function favouriteCars(): BelongsToMany
     {
         return $this->belongsToMany(Car::class, 'favourite_cars');
     }
