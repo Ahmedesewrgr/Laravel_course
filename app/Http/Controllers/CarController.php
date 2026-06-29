@@ -53,7 +53,11 @@ class CarController extends Controller
         ]);
 
         $car = Car::create([
+<<<<<<< HEAD
             'user_id' => 1, // ربط العربية بالمستخدم الحالي
+=======
+            'user_id' => Auth::id(), // ربط العربية بالمستخدم الحالي
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
             'maker_id' => $request->maker_id,
             'model_id' => $request->model_id,
             'year' => $request->year,
@@ -66,11 +70,16 @@ class CarController extends Controller
             'address' => $request->address,
             'phone' => $request->phone,
             'description' => $request->description,
+<<<<<<< HEAD
             // 'published_at' => $request->published_at ? 1 : 0,
+=======
+            'published_at' => $request->published_at ? 1 : 0,
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
             'published_at' => $request->published ? now() : null,
 
         ]);
 
+<<<<<<< HEAD
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
@@ -84,6 +93,16 @@ class CarController extends Controller
         }
 
 
+=======
+        // حفظ الصور لو اتبعتت
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('cars', 'public');
+                $car->images()->create(['image_path' => $path, 'position' => 1]);
+            }
+        }
+
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
         return redirect()->route('car.show', $car->id);
     }
 
@@ -99,6 +118,7 @@ class CarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+<<<<<<< HEAD
     public function edit($id)
     {
         $car = Car::findOrFail($id);
@@ -139,16 +159,36 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      */
+=======
+    public function edit(Car $car)
+    {
+        return view('car.edit');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Car $car)
+    {
+        //
+    }
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
 
     /**
      * Remove the specified resource from storage.
      */
+<<<<<<< HEAD
     public function destroy($id)
     {
         $car = Car::findOrFail($id);
         $car->delete();
 
         return redirect()->route('car.index')->with('success', 'Car deleted successfully!');
+=======
+    public function destroy(Car $car)
+    {
+        //
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
     }
 
     public function search()

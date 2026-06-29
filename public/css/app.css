@@ -719,6 +719,7 @@ main {
 .car-item-price {
   font-weight: 500;
 }
+<<<<<<< HEAD
 .car-item-image{
   width: 120px;
   height: 80px;
@@ -729,6 +730,9 @@ main {
 
 
 }
+=======
+
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
 .car-item-img {
   height: 160px;
   width: 100%;
@@ -1128,6 +1132,7 @@ a.pagination-item:hover {
 }
 
 .my-cars-img-thumbnail {
+<<<<<<< HEAD
   width: 120px;
   height: 80px;
   object-fit: cover;
@@ -1137,6 +1142,12 @@ a.pagination-item:hover {
 }
 
 
+=======
+  width: 60px;
+  border-radius: 6px;
+}
+
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
 .auth-page-title {
   text-align: center;
 }

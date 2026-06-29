@@ -55,7 +55,10 @@
             <input type="text" name="phone" placeholder="Phone" />
         </div>
         <button type="submit" class="btn btn-primary btn-login w-full">Register</button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
     </form>
 
     <x-slot:footerLink>

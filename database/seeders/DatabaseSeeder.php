@@ -103,7 +103,11 @@ class DatabaseSeeder extends Seeder
                             ),
                         'images'
                     )
+<<<<<<< HEAD
                     ->hasFeatures(),
+=======
+                    ->hasFeatures(), 
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
                 'favouriteCars'
             )
             ->create();

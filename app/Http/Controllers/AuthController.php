@@ -48,7 +48,10 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
         ]);
+<<<<<<< HEAD
         // dd($request->all());
+=======
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
 
         $user = User::create([
             'email' => $request->email,

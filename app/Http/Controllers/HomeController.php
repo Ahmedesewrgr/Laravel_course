@@ -17,7 +17,10 @@ class HomeController extends Controller
         ->with(['primaryImage','city','carType','fuelType','maker','model'])
             ->orderBy('published_at', 'desc')
             ->limit(30)
+<<<<<<< HEAD
             
+=======
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
             ->get();
 
 

@@ -42,7 +42,11 @@ class Car extends Model
 
    public function primaryImage()
 {
+<<<<<<< HEAD
     return $this->hasOne(CarImage::class)->oldestOfMany('position');
+=======
+    return $this->hasOne(CarImage::class)->where('is_primary', 1)->oldestOfMany('position');
+>>>>>>> 5e246acb31178e9f76957c5b91fef062be249b02
     }
 
 
